@@ -31,7 +31,7 @@
         </div><!-- / .navbar-collapse -->
       </div>
     </nav>
-    <!-- Success and error message to allow message to be shown on any page -->
+    <!-- Success and error message -->
     <div class="container">
       <% flash.each do |type, msg| %>
           <%= content_tag :div, msg, class: "alert alert-#{type}" %>
