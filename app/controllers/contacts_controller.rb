@@ -5,7 +5,7 @@ class ContactsController < ApplicationController
   
   def create
     @contact = Contact.new(contact_params) #Fills in the blank parameters set in the contact object
-    if @contact.save #saves the newly filled contact form to the database
+    if @contact.save #saves the newly filled contact form to the database and an email
       name = params[:contact][:name]
       email = params[:contact][:email]
       body = params[:contact][:comments]
