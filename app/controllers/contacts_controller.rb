@@ -1,25 +1,39 @@
 class ContactsController < ApplicationController 
+  
+  # GET request to /contact-us
+  # Show new contact form
   def new
     @contact = Contact.new #creates a blank contact object
   end
   
+  # POST request /contacts
   def create
-    @contact = Contact.new(contact_params) #Fills in the blank parameters set in the contact object
-    if @contact.save #saves the newly filled contact form to the database and an email
+    # Mass assignment of form fields into Contact object
+    @contact = Contact.new(contact_params)
+    # Saves the newly filled contact form to the database
+    if @contact.save 
+      # Stores form fields via paramaters, into variables
       name = params[:contact][:name]
       email = params[:contact][:email]
       body = params[:contact][:comments]
+      # Plug variables into Contact Mailer email method and send email
       ContactMailer.contact_email(name, email, body).deliver
-      flash[:success] = "Message Sent!" #save success
+      # Store sucess nessage in flash hash
+      # and redirect to the new action
+      flash[:success] = "Message Sent!" 
       redirect_to new_contact_path 
     else
+      # If Contact object doesn't save, 
+      # store errors in flash hash,
+      # and redirect to the new action
       flash[:danger] = @contact.errors.full_messages.join(", ")#save failed
       redirect_to new_contact_path
     end
   end
   
-  #Gets the contact forms parameters 
   private
+  # To collect data from form, we need to use strong parameters
+  # and whitelist the form fields
   def contact_params
     params.require(:contact).permit(:name, :email, :comments)
   end
